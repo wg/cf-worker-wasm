@@ -1,0 +1,16 @@
+name = "cf-worker-wasm"
+type = "javascript"
+
+compatibility_date = "2022-01-01"
+
+[build]
+command = "node build.js"
+
+[build.upload]
+format = "modules"
+dir    = "dist"
+main   = "worker.js"
+
+[[build.upload.rules]]
+globs = ["**/*.wasm"]
+type  = "CompiledWasm"

@@ -1,0 +1,14 @@
+{
+    "name": "cf-worker-wasm",
+    "type": "module",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "miniflare -d --watch",
+        "publish": "wrangler publish dist/worker.js"
+    },
+    "devDependencies": {
+        "esbuild": "0.14.11",
+        "miniflare": "2.0.0",
+        "wrangler": "0.0.7"
+    }
+}
