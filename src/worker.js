@@ -9,6 +9,7 @@ export default {
 
         let name  = request.url.split('/').pop();
         let hello = greet(name);
+
         return new Response(hello);
     }
 }

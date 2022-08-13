@@ -3,12 +3,12 @@
     "type": "module",
     "version": "0.0.1",
     "scripts": {
-        "start": "miniflare -d --watch",
-        "publish": "wrangler publish dist/worker.js"
+        "start": "node --experimental-vm-modules serve.js",
+        "publish": "wrangler publish"
     },
     "devDependencies": {
-        "esbuild": "0.14.11",
-        "miniflare": "2.0.0",
+        "esbuild": "^0.15.2",
+        "miniflare": "^2.6.0",
         "wrangler": "^2.0.25"
     }
 }

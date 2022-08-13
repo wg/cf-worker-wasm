@@ -1,10 +1,13 @@
 import { copyFileSync, mkdirSync } from 'fs';
+import process from 'process';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { build } from 'esbuild';
+import { Log, LogLevel, Miniflare } from 'miniflare';
 
-const root = fileURLToPath(dirname(import.meta.url));
-const dist = join(root, 'dist');
+const root   = fileURLToPath(dirname(import.meta.url));
+const dist   = join(root, 'dist');
+const worker = join(dist, "worker.js");
 
 let plugin = {
     name: 'copy-wasm-plugin',
@@ -22,13 +25,32 @@ let plugin = {
     }
 };
 
-build({
+await build({
     entryPoints: ["src/worker.js"],
     bundle: true,
     format: 'esm',
-    outfile: join(dist, "worker.js"),
+    outfile: worker,
     sourcemap: true,
     external: ["*.wasm"],
-    plugins: [plugin],
     logLevel: 'debug',
-}).catch(() => process.exit(1));
+    watch: true,
+    plugins: [plugin],
+});
+
+const miniflare = new Miniflare({
+    scriptPath: worker,
+    modules: true,
+    modulesRules: [{
+        type: "CompiledWasm",
+        include: ["**/*.wasm"],
+    }],
+    log: new Log(LogLevel.DEBUG),
+    watch: true,
+});
+
+let server = await miniflare.startServer();
+
+process.on('SIGINT', async () => {
+    server.close();
+    await miniflare.dispose();
+});

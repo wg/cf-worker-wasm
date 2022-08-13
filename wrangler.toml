@@ -1,7 +1,4 @@
 name = "cf-worker-wasm"
-main = "dist/worker.js"
+main = "src/worker.js"
 
 compatibility_date = "2022-08-01"
-
-[build]
-command = "node build.js"

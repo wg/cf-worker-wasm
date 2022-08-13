@@ -1,7 +1,7 @@
 # WASM on CloudFlare Workers
 
 Minimal example of a CloudFlare Worker that calls into a WASM module.
-The Worker is a JavaScript module bundled with esbuild and the WASM
+The Worker is a JavaScript module bundled with wrangler and the WASM
 module is written in Rust using wasm-bindgen to generate the JS shims
 that handle passing arguments from JavaScript and returning values
 from Rust.
@@ -12,8 +12,9 @@ from Rust.
 last element of the request URL to the `greet` function exported by
 the WASM module and returns the resulting string as the HTTP response.
 
-esbuild is used to bundle worker.js and the WASM shims into a single
-`dist/worker.js` module. The esbuild config in [build.js](build.js)
+`npm start` runs the Worker locally using Miniflare and demonstrates
+using esbuild to bundle worker.js and the WASM shims into a single
+`dist/worker.js` module. The esbuild config in [serve.js](serve.js)
 declares "*.wasm" as external to preserve imports of WASM bytecode
 which are resolved to `WebAssembly.Module` instances by the Workers
 runtime.
